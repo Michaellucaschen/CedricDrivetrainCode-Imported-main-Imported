@@ -11,13 +11,21 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class armsubsystem extends SubsystemBase{
-    private final SparkMax m_ArmSpark;
-
-    /** Creates a new armsubsystem. */
-    public armsubsystem(int m_ArmSpark){
-        
+public class IntakeSubsystem extends SubsystemBase {
+    private final SparkMax intakeMotor;
+  
+    /**
+     * 
+     */
+    public IntakeSubsystem() {
+      intakeMotor = new SparkMax(50,MotorType.kBrushed); // Replace 0 with the actual motor port
     }
-}
-
-}
+  
+    public void runIntake(double speed) {
+      intakeMotor.set(speed);
+    }
+  
+    public void stopIntake() {
+      intakeMotor.set(0);
+    }
+  }

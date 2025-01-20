@@ -13,12 +13,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -35,10 +35,12 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-    private final JoystickButton resetheading = new JoystickButton(m_driverController, XboxController.Button.kB.value);
+  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private final JoystickButton resetheading = new JoystickButton(m_driverController, Button.kB.value);
+  private final JoystickButton intake = new JoystickButton(m_driverController, Button.kX.value);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -73,10 +75,14 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-    
+    // new JoystickButton(m_driverController, Button.kX.value).whileTrue(m_intake.runIntakeCommand());
+    //m_driverController.x().onTrue(new InstantCommand(() -> System.out.println("speed")));
+    //m_driverController.x().onTrue(m_intake.runIntakeCommand());
     resetheading.onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive));
+    intake.whileTrue(new InstantCommand(() -> m_intake.runIntake(1.0),m_intake));
 
   }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -123,4 +129,10 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
   }
-}
+
+/**
+     * Configure bindings for buttons and motor control.
+     */
+    private void configureBindings(){};
+  }
+    

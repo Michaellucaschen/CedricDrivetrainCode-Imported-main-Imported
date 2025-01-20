@@ -100,6 +100,10 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
   public static final int m_ArmSpark = 50;
+  public static final class Elevatorsubsystemconstants{
+     public static final int elevatorcanid = 51;
+  }
+ 
 
   
     
